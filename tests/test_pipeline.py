@@ -89,3 +89,12 @@ def test_verifier_flags_unsupported_claim(cfg):
     ev = [("d1", "Canberra is the capital city of Australia.")]
     assert v.verify("Canberra is the capital city of Australia.", ev)[0].supported
     assert not v.verify("Sydney hosts the federal parliament of Brazil.", ev)[0].supported
+
+
+def test_prompt_keeps_question_and_trims_long_passages():
+    from acrc_guard.generator import build_prompt
+
+    long_ctx = "word " * 1000
+    prompt = build_prompt("Who wrote Hamlet?", [long_ctx] * 5, "context")
+    assert prompt.index("Who wrote Hamlet?") < prompt.index("[1]")
+    assert len(prompt.split()) < 1000

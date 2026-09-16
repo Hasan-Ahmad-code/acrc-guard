@@ -74,8 +74,29 @@ Backends: TF-IDF retriever, extractive reader, lexical verifier.
 
 ### Full models (MiniLM + DeBERTa-v3 NLI + FLAN-T5)
 
-Run `notebooks/kaggle_run.ipynb` on a free Kaggle GPU. It benchmarks the sample set and **300 SQuAD
-questions** and writes results to `results/`. *(Table to be added after the run.)*
+Same 27-question benchmark, run on a Kaggle T4 GPU with `all-MiniLM-L6-v2` retrieval,
+`google/flan-t5-base` generation and `cross-encoder/nli-deberta-v3-base` claim verification
+([notebook](https://www.kaggle.com/code/hasanahmad2005/acrc-guard-benchmark)).
+
+| Poison / question | Method | Accuracy ↑ | Attack success ↓ | Unsupported claims ↓ | Poison reaching generator ↓ |
+|:-:|---|:-:|:-:|:-:|:-:|
+| 0 | Vanilla RAG | 0.78 | 0.00 | 0.19 | 0 |
+| 0 | **ACRC-Guard** | **1.00** | 0.00 | **0.15** | 0 |
+| 1 | Vanilla RAG | 0.37 | 0.30 | 0.19 | 1.0 |
+| 1 | **ACRC-Guard** | **1.00** | **0.00** | **0.15** | **0** |
+| 3 | Vanilla RAG | 0.33 | 0.22 | 0.30 | 3.0 |
+| 3 | **ACRC-Guard** | **1.00** | **0.00** | **0.15** | **0** |
+| 5 | Vanilla RAG | 0.00 | 0.63 | 0.22 | 4.8 |
+| 5 | **ACRC-Guard** | **1.00** | **0.00** | **0.15** | **0** |
+
+With 5 poisoned passages per question, vanilla RAG answers **63%** of questions with the
+attacker's target and gets none right; ACRC-Guard keeps every poisoned passage out of the
+generator and answers all 27 correctly.
+
+> **Scale caveat.** 27 questions is a small, hand-built benchmark with template-style attacks.
+> A 300-question SQuAD run is in progress: the first attempt exposed a prompt-truncation bug
+> (long SQuAD passages pushed the question out of FLAN-T5's input window), which is now fixed;
+> results will be added after the rerun.
 
 ---
 

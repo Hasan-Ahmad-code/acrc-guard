@@ -33,10 +33,20 @@ PROMPTS = {
 }
 
 
+MAX_CONTEXT_WORDS = 120  # per passage; keeps prompts inside small models' input limit
+
+
+def _trim(text: str, max_words: int = MAX_CONTEXT_WORDS) -> str:
+    words = text.split()
+    return text if len(words) <= max_words else " ".join(words[:max_words]) + " ..."
+
+
 def build_prompt(question: str, contexts: list[str], mode: str) -> str:
-    parts = [PROMPTS[mode], ""]
+    # The question is placed BEFORE the passages as well as after them, so it is never
+    # lost when a long prompt is truncated to the model's maximum input length.
+    parts = [PROMPTS[mode], f"Question: {question}", ""]
     if mode != "parametric" and contexts:
-        parts += [f"[{i + 1}] {c}" for i, c in enumerate(contexts)] + [""]
+        parts += [f"[{i + 1}] {_trim(c)}" for i, c in enumerate(contexts)] + [""]
     parts.append(f"Question: {question}\nAnswer:")
     return "\n".join(parts)
 
@@ -73,7 +83,7 @@ class HFGenerator:
 
     def generate(self, question: str, contexts: list[str], mode: str) -> str:
         prompt = build_prompt(question, contexts, mode)
-        inputs = self.tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512).to(self.device)
+        inputs = self.tokenizer(prompt, return_tensors="pt", truncation=True, max_length=1024).to(self.device)
         with self.torch.no_grad():
             out = self.model.generate(**inputs, max_new_tokens=64, do_sample=False)
         return self.tokenizer.decode(out[0], skip_special_tokens=True).strip()
