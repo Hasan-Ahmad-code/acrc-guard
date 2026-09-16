@@ -1,4 +1,4 @@
-"""Vanilla RAG baseline and the ACRC-Guard pipeline.
+ """Vanilla RAG baseline and the ACRC-Guard pipeline.
 
 Heavy components (embedder, generator, verifier) are loaded once via `Components`
 and shared by both pipelines so comparisons are fair and cheap.
@@ -65,7 +65,7 @@ class VanillaRAG:
         hits = self.c.retriever.search(question, cfg.top_k)
         contexts = [p.text for p, _ in hits]
         answer = self.c.generator.generate(question, contexts, "vanilla")
-        claims = self.c.verifier.verify(answer, [(p.id, p.text) for p, _ in hits]) if self.c.verifier else []
+        claims = self.c.verifier.verify(answer, [(p.id, p.text) for p, _ in hits], question) if self.c.verifier else []
         return RAGResult(
             question=question,
             answer=answer,
@@ -109,7 +109,7 @@ class GuardedRAG:
 
         claims: list[Claim] = []
         if self.c.verifier:
-            claims = self.c.verifier.verify(answer, [(sp.passage.id, sp.passage.text) for sp in kept])
+            claims = self.c.verifier.verify(answer, [(sp.passage.id, sp.passage.text) for sp in kept], question)
 
         return RAGResult(
             question=question,
