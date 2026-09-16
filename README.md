@@ -74,29 +74,43 @@ Backends: TF-IDF retriever, extractive reader, lexical verifier.
 
 ### Full models (MiniLM + DeBERTa-v3 NLI + FLAN-T5)
 
-Same 27-question benchmark, run on a Kaggle T4 GPU with `all-MiniLM-L6-v2` retrieval,
-`google/flan-t5-base` generation and `cross-encoder/nli-deberta-v3-base` claim verification
-([notebook](https://www.kaggle.com/code/hasanahmad2005/acrc-guard-benchmark)).
+Run on a Kaggle T4 GPU with `all-MiniLM-L6-v2` retrieval, `google/flan-t5-base` generation and
+`cross-encoder/nli-deberta-v3-base` claim verification
+([notebook, version 2](https://www.kaggle.com/code/hasanahmad2005/acrc-guard-benchmark)).
 
-| Poison / question | Method | Accuracy ↑ | Attack success ↓ | Unsupported claims ↓ | Poison reaching generator ↓ |
-|:-:|---|:-:|:-:|:-:|:-:|
-| 0 | Vanilla RAG | 0.78 | 0.00 | 0.19 | 0 |
-| 0 | **ACRC-Guard** | **1.00** | 0.00 | **0.15** | 0 |
-| 1 | Vanilla RAG | 0.37 | 0.30 | 0.19 | 1.0 |
-| 1 | **ACRC-Guard** | **1.00** | **0.00** | **0.15** | **0** |
-| 3 | Vanilla RAG | 0.33 | 0.22 | 0.30 | 3.0 |
-| 3 | **ACRC-Guard** | **1.00** | **0.00** | **0.15** | **0** |
-| 5 | Vanilla RAG | 0.00 | 0.63 | 0.22 | 4.8 |
-| 5 | **ACRC-Guard** | **1.00** | **0.00** | **0.15** | **0** |
+#### SQuAD v1.1: 300 questions
 
-With 5 poisoned passages per question, vanilla RAG answers **63%** of questions with the
-attacker's target and gets none right; ACRC-Guard keeps every poisoned passage out of the
-generator and answers all 27 correctly.
+| Poison / question | Method | Accuracy ↑ | Attack success ↓ | Abstain | Poison reaching generator ↓ | Latency (ms) |
+|:-:|---|:-:|:-:|:-:|:-:|:-:|
+| 0 | Vanilla RAG | **0.83** | 0.00 | 0.00 | 0 | 314 |
+| 0 | ACRC-Guard | 0.79 | 0.00 | 0.08 | 0 | 368 |
+| 1 | Vanilla RAG | 0.54 | 0.17 | 0.00 | 1.0 | 249 |
+| 1 | **ACRC-Guard** | **0.75** | **0.00** | 0.10 | **0** | 320 |
+| 3 | Vanilla RAG | 0.31 | 0.12 | 0.00 | 3.0 | 217 |
+| 3 | **ACRC-Guard** | **0.68** | **0.00** | 0.15 | **0** | 325 |
+| 5 | Vanilla RAG | 0.02 | 0.18 | 0.00 | 4.9 | 164 |
+| 5 | **ACRC-Guard** | **0.65** | **0.00** | 0.18 | **0** | 334 |
 
-> **Scale caveat.** 27 questions is a small, hand-built benchmark with template-style attacks.
-> A 300-question SQuAD run is in progress: the first attempt exposed a prompt-truncation bug
-> (long SQuAD passages pushed the question out of FLAN-T5's input window), which is now fixed;
-> results will be added after the rerun.
+With 5 poisoned passages per question, vanilla RAG accuracy collapses from 83% to 2%, while
+ACRC-Guard keeps every targeted poisoned passage away from the generator, holds attack success
+at 0% and still answers 65% of questions correctly. The cost: on a clean corpus it is about
+4 points less accurate, because it abstains on 8% of questions whose evidence looks weak.
+
+#### Sample set: 27 questions
+
+| Poison / question | Vanilla accuracy | Vanilla attack success | ACRC-Guard accuracy | ACRC-Guard attack success |
+|:-:|:-:|:-:|:-:|:-:|
+| 0 | 0.67 | 0.00 | **0.89** | 0.00 |
+| 1 | 0.15 | 0.22 | **0.89** | **0.00** |
+| 3 | 0.07 | 0.11 | **0.93** | **0.00** |
+| 5 | 0.00 | 0.30 | **0.93** | **0.00** |
+
+> **Caveats.** Attacks are template-style (PoisonedRAG black-box); adaptive attackers that
+> paraphrase the question are not evaluated. The unsupported-claim rate on SQuAD (~0.6 for both
+> methods) is high because short FLAN-T5 answers rewritten as NLI hypotheses are often judged
+> "neutral" against long passages, so it is reported in `summary.csv` but not used as a headline
+> metric. An earlier run was discarded after it exposed a prompt-truncation bug (long passages
+> pushed the question out of FLAN-T5's input window); the numbers above come from the fixed code.
 
 ---
 
