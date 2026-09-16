@@ -30,7 +30,8 @@ class NLIVerifier:
         self.name = model_name
         self.threshold = threshold
         self.model = CrossEncoder(model_name)
-        labels = {v.lower(): int(k) for k, v in self.model.model.config.id2label.items()}
+        config = getattr(self.model, "config", None) or self.model.model.config
+        labels = {v.lower(): int(k) for k, v in config.id2label.items()}
         self.entail_idx = labels.get("entailment", 1)
 
     def support(self, claim: str, evidence: list[str]) -> np.ndarray:

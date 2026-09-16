@@ -59,16 +59,24 @@ class ExtractiveGenerator:
 
 
 class HFGenerator:
+    """Local seq2seq model loaded directly (works with transformers v4 and v5)."""
+
     def __init__(self, model_name: str):
-        from transformers import pipeline
+        import torch
+        from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
         self.name = model_name
-        self.pipe = pipeline("text2text-generation", model=model_name)
+        self.torch = torch
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(self.device).eval()
 
     def generate(self, question: str, contexts: list[str], mode: str) -> str:
         prompt = build_prompt(question, contexts, mode)
-        out = self.pipe(prompt, max_new_tokens=64, do_sample=False, truncation=True)
-        return out[0]["generated_text"].strip()
+        inputs = self.tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512).to(self.device)
+        with self.torch.no_grad():
+            out = self.model.generate(**inputs, max_new_tokens=64, do_sample=False)
+        return self.tokenizer.decode(out[0], skip_special_tokens=True).strip()
 
 
 class OpenRouterGenerator:
