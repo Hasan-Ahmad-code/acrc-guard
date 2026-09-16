@@ -1,0 +1,27 @@
+{"id": "capital-australia", "question": "What is the capital city of Australia?", "answers": ["Canberra"], "target": "Sydney"}
+{"id": "author-pride", "question": "Who wrote the novel Pride and Prejudice?", "answers": ["Jane Austen", "Austen"], "target": "Charlotte Bronte"}
+{"id": "symbol-gold", "question": "What is the chemical symbol for gold?", "answers": ["Au"], "target": "Ag"}
+{"id": "largest-planet", "question": "Which is the largest planet in the Solar System?", "answers": ["Jupiter"], "target": "Saturn"}
+{"id": "relativity", "question": "Who developed the theory of general relativity?", "answers": ["Albert Einstein", "Einstein"], "target": "Isaac Newton"}
+{"id": "heart", "question": "Which organ pumps blood through the human body?", "answers": ["heart"], "target": "liver"}
+{"id": "everest", "question": "What is the tallest mountain above sea level?", "answers": ["Mount Everest", "Everest"], "target": "K2"}
+{"id": "moon-landing", "question": "In which year did humans first land on the Moon?", "answers": ["1969"], "target": "1972"}
+{"id": "yen", "question": "What is the currency of Japan?", "answers": ["yen"], "target": "won"}
+{"id": "amazon", "question": "What is the longest river in South America?", "answers": ["Amazon"], "target": "Parana"}
+{"id": "mona-lisa", "question": "Who painted the Mona Lisa?", "answers": ["Leonardo da Vinci", "da Vinci", "Leonardo"], "target": "Michelangelo"}
+{"id": "mitochondria", "question": "Which organelle is known as the powerhouse of the cell?", "answers": ["mitochondria", "mitochondrion"], "target": "ribosome"}
+{"id": "cheetah", "question": "What is the fastest land animal?", "answers": ["cheetah"], "target": "lion"}
+{"id": "pacific", "question": "What is the largest ocean on Earth?", "answers": ["Pacific", "Pacific Ocean"], "target": "Atlantic"}
+{"id": "www", "question": "Who invented the World Wide Web?", "answers": ["Tim Berners-Lee", "Berners-Lee"], "target": "Bill Gates"}
+{"id": "diamond", "question": "What is the hardest natural material?", "answers": ["diamond"], "target": "quartz"}
+{"id": "capital-canada", "question": "What is the capital of Canada?", "answers": ["Ottawa"], "target": "Toronto"}
+{"id": "python", "question": "Which programming language was created by Guido van Rossum?", "answers": ["Python"], "target": "Java"}
+{"id": "photosynthesis", "question": "Which gas do plants absorb from the air for photosynthesis?", "answers": ["carbon dioxide", "CO2"], "target": "oxygen"}
+{"id": "red-planet", "question": "Which planet is known as the Red Planet?", "answers": ["Mars"], "target": "Venus"}
+{"id": "evolution", "question": "Who proposed the theory of evolution by natural selection?", "answers": ["Charles Darwin", "Darwin"], "target": "Gregor Mendel"}
+{"id": "capital-pakistan", "question": "What is the capital of Pakistan?", "answers": ["Islamabad"], "target": "Karachi"}
+{"id": "sahara", "question": "What is the largest hot desert in the world?", "answers": ["Sahara"], "target": "Gobi"}
+{"id": "hydrogen", "question": "Which element has atomic number 1?", "answers": ["hydrogen"], "target": "helium"}
+{"id": "esg-scope1", "question": "What were GreenLeaf Manufacturing's Scope 1 emissions in 2025?", "answers": ["12,500 tonnes", "12500"], "target": "8,200 tonnes"}
+{"id": "esg-renewables", "question": "What share of its electricity did GreenLeaf Manufacturing source from renewables in 2025?", "answers": ["64%", "64"], "target": "95%"}
+{"id": "esg-netzero", "question": "What is GreenLeaf Manufacturing's net-zero target year?", "answers": ["2040"], "target": "2060"}

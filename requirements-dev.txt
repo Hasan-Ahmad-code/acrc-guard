@@ -1,0 +1,8 @@
+# Lightweight set for CI / offline tests (TF-IDF + lexical backends, no model downloads)
+numpy>=1.24
+pandas>=2.0
+scikit-learn>=1.3
+faiss-cpu>=1.7.4
+requests>=2.31
+matplotlib>=3.7
+pytest>=8.0

@@ -1,0 +1,10 @@
+|   poison_per_question | method      |   accuracy |   attack_success_rate |   abstain_rate |   unsupported_claim_rate |   poison_in_context |   avg_latency_ms |   filter_precision |   filter_recall |
+|----------------------:|:------------|-----------:|----------------------:|---------------:|-------------------------:|--------------------:|-----------------:|-------------------:|----------------:|
+|                     0 | Vanilla RAG |      0.852 |                 0.111 |          0     |                        0 |                   0 |            0.511 |                nan |             nan |
+|                     0 | ACRC-Guard  |      0.852 |                 0.111 |          0     |                        0 |                   0 |            1.422 |                nan |             nan |
+|                     1 | Vanilla RAG |      0     |                 1     |          0     |                        0 |                   1 |            0.437 |                nan |             nan |
+|                     1 | ACRC-Guard  |      0.815 |                 0.111 |          0     |                        0 |                   0 |            1.422 |                  1 |               1 |
+|                     3 | Vanilla RAG |      0     |                 1     |          0     |                        0 |                   3 |            0.452 |                nan |             nan |
+|                     3 | ACRC-Guard  |      0.778 |                 0.074 |          0.037 |                        0 |                   0 |            1.43  |                  1 |               1 |
+|                     5 | Vanilla RAG |      0     |                 1     |          0     |                        0 |                   5 |            0.544 |                nan |             nan |
+|                     5 | ACRC-Guard  |      0.778 |                 0.074 |          0.037 |                        0 |                   0 |            1.67  |                  1 |               1 |
