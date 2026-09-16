@@ -1,4 +1,4 @@
- """Vanilla RAG baseline and the ACRC-Guard pipeline.
+"""Vanilla RAG baseline and the ACRC-Guard pipeline.
 
 Heavy components (embedder, generator, verifier) are loaded once via `Components`
 and shared by both pipelines so comparisons are fair and cheap.
